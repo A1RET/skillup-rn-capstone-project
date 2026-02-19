@@ -1,16 +1,31 @@
 import { View, Text, StyleSheet } from "react-native";
 import { COLORS, FONT, SIZES } from "../constants/theme";
 
-const Welcome = ({ userDetails }) => {
-    console.log("userDetails", userDetails?.userName);
+const getThemeStyles = (isDark) => ({
+    userName: {
+        color: isDark ? COLORS.darkText : COLORS.lightText,
+    },
+    welcomeMessage: {
+        color: isDark ? COLORS.darkText : COLORS.lightText,
+    },
+});
+
+const Welcome = ({ userDetails, isDarkMode }) => {
+    const themeStyles = getThemeStyles(isDarkMode);
+
     return (
         <>
             <View>
                 <View style={styles.container} testID="styles.container">
-                    <Text style={styles.userName}>
+                    <Text style={[styles.userName, themeStyles.userName]}>
                         Hello {userDetails?.userName}!
                     </Text>
-                    <Text style={styles.welcomeMessage}>
+                    <Text
+                        style={[
+                            styles.welcomeMessage,
+                            themeStyles.welcomeMessage,
+                        ]}
+                    >
                         Find your perfect meditation
                     </Text>
                 </View>
@@ -22,16 +37,15 @@ const Welcome = ({ userDetails }) => {
 const styles = StyleSheet.create({
     container: {
         width: "100%",
+        padding: 10,
     },
     userName: {
         fontFamily: FONT.regular,
         fontSize: SIZES.large,
-        color: COLORS.secondary,
     },
     welcomeMessage: {
         fontFamily: FONT.bold,
         fontSize: SIZES.xLarge,
-        color: COLORS.primary,
         marginTop: 2,
     },
     searchContainer: {
@@ -43,7 +57,6 @@ const styles = StyleSheet.create({
     },
     searchWrapper: {
         flex: 1,
-        backgroundColor: COLORS.white,
         marginRight: SIZES.small,
         justifyContent: "center",
         alignItems: "center",
@@ -59,7 +72,6 @@ const styles = StyleSheet.create({
     searchBtn: {
         width: 50,
         height: "100%",
-        backgroundColor: COLORS.tertiary,
         borderRadius: SIZES.medium,
         justifyContent: "center",
         alignItems: "center",
@@ -67,7 +79,6 @@ const styles = StyleSheet.create({
     searchBtnImage: {
         width: "50%",
         height: "50%",
-        tintColor: COLORS.white,
     },
     tabsContainer: {
         width: "100%",

@@ -10,6 +10,7 @@ import {
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { useTheme } from "../../context/ThemeProvider";
 import { COLORS, FONT, icons, SHADOWS, SIZES } from "../../constants";
 
 import ScreenHeaderBtn from "../../components/ScreenHeaderBtn";
@@ -56,8 +57,19 @@ const Settings = () => {
         router.push("/login");
     };
 
+    const { theme, toggleTheme } = useTheme();
+
+    const isDarkMode = theme === "dark";
+
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
+        <SafeAreaView
+            style={{
+                flex: 1,
+                backgroundColor: isDarkMode
+                    ? COLORS.darkBackground
+                    : COLORS.lightWhite,
+            }}
+        >
             <ScreenHeaderBtn />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ flex: 1, padding: SIZES.medium }}>
@@ -67,7 +79,9 @@ const Settings = () => {
                                 style={{
                                     fontFamily: FONT.regular,
                                     fontSize: SIZES.large,
-                                    color: COLORS.secondary,
+                                    color: isDarkMode
+                                        ? COLORS.white
+                                        : COLORS.secondary,
                                 }}
                             >
                                 Hello {JSON.parse(userDetails).userName}!
@@ -77,7 +91,9 @@ const Settings = () => {
                             style={{
                                 fontFamily: FONT.bold,
                                 fontSize: SIZES.xLarge,
-                                color: COLORS.primary,
+                                color: isDarkMode
+                                    ? COLORS.white
+                                    : COLORS.primary,
                                 marginTop: 2,
                             }}
                         >

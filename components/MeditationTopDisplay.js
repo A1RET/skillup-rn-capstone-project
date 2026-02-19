@@ -2,12 +2,27 @@ import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { COLORS, FONT, SIZES } from "../constants";
 
+const getThemeStyles = (isDark) => ({
+    meditationTitle: {
+        color: isDark ? COLORS.darkText : COLORS.primary,
+    },
+    meditationName: {
+        color: isDark ? COLORS.darkText : COLORS.primary,
+    },
+    durationName: {
+        color: isDark ? COLORS.darkText : COLORS.gray,
+    },
+});
+
 const MeditationTopDisplay = ({
     meditationImage,
     meditationTitle,
     duration,
     target,
+    isDarkMode,
 }) => {
+    const themeStyles = getThemeStyles(isDarkMode);
+
     return (
         <View style={styles.container}>
             <View style={styles.logoBox}>
@@ -21,11 +36,22 @@ const MeditationTopDisplay = ({
             </View>
 
             <View style={styles.meditationTitleBox}>
-                <Text style={styles.meditationTitle}>{meditationTitle}</Text>
+                <Text
+                    style={[
+                        styles.meditationTitle,
+                        themeStyles.meditationTitle,
+                    ]}
+                >
+                    {meditationTitle}
+                </Text>
             </View>
 
             <View style={styles.meditationInfoBox}>
-                <Text style={styles.meditationName}>{target} / </Text>
+                <Text
+                    style={[styles.meditationName, themeStyles.meditationName]}
+                >
+                    {target} /{" "}
+                </Text>
                 <View style={styles.durationBox}>
                     <Image
                         source={
@@ -35,7 +61,11 @@ const MeditationTopDisplay = ({
                         style={styles.durationImage}
                     />
 
-                    <Text style={styles.durationName}>{duration}</Text>
+                    <Text
+                        style={[styles.durationName, themeStyles.durationName]}
+                    >
+                        {duration}
+                    </Text>
                 </View>
             </View>
         </View>
@@ -67,7 +97,6 @@ const styles = StyleSheet.create({
     },
     meditationTitle: {
         fontSize: SIZES.large,
-        color: COLORS.primary,
         fontFamily: FONT.bold,
         textAlign: "center",
     },
@@ -79,7 +108,6 @@ const styles = StyleSheet.create({
     },
     meditationName: {
         fontSize: SIZES.medium - 2,
-        color: COLORS.primary,
         fontFamily: FONT.medium,
     },
     durationBox: {
@@ -94,7 +122,6 @@ const styles = StyleSheet.create({
     },
     durationName: {
         fontSize: SIZES.medium - 2,
-        color: COLORS.gray,
         fontFamily: FONT.regular,
         marginLeft: 2,
     },

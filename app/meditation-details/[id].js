@@ -20,7 +20,21 @@ import ScreenHeaderBtn from "../../components/ScreenHeaderBtn";
 import { COLORS, icons, SIZES } from "../../constants";
 import useFetch from "../../hook/useFetch";
 
+import { useTheme } from "../../context/ThemeProvider";
+
 const tabs = ["About", "Instructions"];
+
+const getThemeStyles = (isDark) => ({
+    container: {
+        backgroundColor: isDark ? COLORS.darkBackground : COLORS.lightWhite,
+    },
+    specificsTitle: {
+        color: isDark ? COLORS.darkText : COLORS.primary,
+    },
+    pointText: {
+        color: isDark ? COLORS.darkText : COLORS.gray,
+    },
+});
 
 const MeditationDetails = () => {
     const params = useGlobalSearchParams();
@@ -52,24 +66,44 @@ const MeditationDetails = () => {
         }
     };
 
+    const { theme } = useTheme();
+    const isDarkMode = theme === "dark";
+
+    const themeStyles = getThemeStyles(isDarkMode);
+
     const displayTabContent = () => {
         if (activeTab === "About") {
             return (
                 <About
                     title={meditationItem.title}
                     info={meditationItem.description ?? "No data provided"}
+                    isDarkMode={isDarkMode}
                 />
             );
         } else if (activeTab === "Instructions") {
             return (
                 <View style={styles.specificsContainer}>
-                    <Text style={styles.specificsTitle}>Instructions:</Text>
+                    <Text
+                        style={[
+                            styles.specificsTitle,
+                            themeStyles.specificsTitle,
+                        ]}
+                    >
+                        Instructions:
+                    </Text>
                     <View style={styles.pointsContainer}>
                         {(meditationItem.instructions ?? ["N/A"]).map(
                             (item, index) => (
                                 <View style={styles.pointWrapper} key={index}>
                                     <View style={styles.pointDot} />
-                                    <Text style={styles.pointText}>{item}</Text>
+                                    <Text
+                                        style={[
+                                            styles.pointText,
+                                            themeStyles.pointText,
+                                        ]}
+                                    >
+                                        {item}
+                                    </Text>
                                 </View>
                             ),
                         )}
@@ -81,7 +115,7 @@ const MeditationDetails = () => {
     };
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, ...themeStyles.container }}>
             <ScreenHeaderBtn detailPage={true} handleShare={onShare} />
 
             <ScrollView
@@ -111,12 +145,14 @@ const MeditationDetails = () => {
                             meditationTitle={meditationItem.title}
                             duration={meditationItem.duration}
                             target={meditationItem.target}
+                            isDarkMode={isDarkMode}
                         />
 
                         <Tabs
                             tabs={tabs}
                             activeTab={activeTab}
                             setActiveTab={setActiveTab}
+                            isDarkMode={isDarkMode}
                         />
 
                         {displayTabContent()}
@@ -124,7 +160,7 @@ const MeditationDetails = () => {
                 )}
             </ScrollView>
 
-            <Footer data={meditationItem} />
+            <Footer data={meditationItem} isDarkMode={isDarkMode} />
         </SafeAreaView>
     );
 };
@@ -155,7 +191,6 @@ const styles = StyleSheet.create({
     },
     pointText: {
         fontSize: SIZES.medium,
-        color: COLORS.gray,
     },
 });
 

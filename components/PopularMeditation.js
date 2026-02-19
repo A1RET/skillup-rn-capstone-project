@@ -12,8 +12,15 @@ import {
 } from "react-native";
 
 import useFetch from "../hook/useFetch";
+import { th } from "date-fns/locale";
 
-const PopularMeditation = () => {
+const getThemeStyles = (isDark) => ({
+    headerTitle: {
+        color: isDark ? COLORS.lightWhite : COLORS.lightText,
+    },
+});
+
+const PopularMeditation = ({ isDarkMode }) => {
     const router = useRouter();
     const { data, isLoading, error } = useFetch("search", {
         query: "React developer",
@@ -26,6 +33,8 @@ const PopularMeditation = () => {
         router.push(`/meditation-details/${item.id}`);
         setselectedMeditation(item.id);
     };
+
+    const themeStyles = getThemeStyles(isDarkMode);
 
     const renderMeditationCard = ({ item }) => (
         <TouchableOpacity
@@ -68,7 +77,9 @@ const PopularMeditation = () => {
         <>
             <View style={styles.container} testID="popularContainer">
                 <View style={styles.header} testID="popularHeader">
-                    <Text style={styles.headerTitle}>Popular Meditations</Text>
+                    <Text style={[styles.headerTitle, themeStyles.headerTitle]}>
+                        Popular Meditations
+                    </Text>
                     <TouchableOpacity></TouchableOpacity>
                 </View>
                 <View style={styles.cardsContainer}>

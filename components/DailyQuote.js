@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 
-const DailyQuote = () => {
+import { COLORS } from "../constants/theme";
+
+const getThemeStyles = (isDark) => ({
+    quoteText: {
+        color: isDark ? COLORS.darkText : COLORS.lightText,
+    },
+});
+
+const DailyQuote = ({ isDarkMode }) => {
     const [quote, setQuote] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -26,13 +34,17 @@ const DailyQuote = () => {
         fetchQuote();
     }, []);
 
+    const themeStyles = getThemeStyles(isDarkMode);
+
     return (
         <View style={styles.container}>
             {loading ? (
                 <ActivityIndicator size="small" color="#0000ff" />
             ) : (
                 <>
-                    <Text style={styles.quoteText}>"{quote}"</Text>
+                    <Text style={[styles.quoteText, themeStyles.quoteText]}>
+                        "{quote}"
+                    </Text>
                 </>
             )}
         </View>

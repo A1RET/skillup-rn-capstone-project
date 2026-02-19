@@ -9,6 +9,12 @@ import {
 
 import { COLORS, SHADOWS, SIZES } from "../constants";
 
+const getThemeStyles = (isDark) => ({
+    container: {
+        backgroundColor: isDark ? COLORS.darkBackground : COLORS.lightWhite,
+    },
+});
+
 function TabButton({ name, activeTab, onHandleSearchType }) {
     return (
         <TouchableOpacity
@@ -20,9 +26,11 @@ function TabButton({ name, activeTab, onHandleSearchType }) {
     );
 }
 
-const Tabs = ({ tabs, activeTab, setActiveTab }) => {
+const Tabs = ({ tabs, activeTab, setActiveTab, isDarkMode }) => {
+    const themeStyles = getThemeStyles(isDarkMode);
+
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, themeStyles.container]}>
             <FlatList
                 data={tabs}
                 horizontal

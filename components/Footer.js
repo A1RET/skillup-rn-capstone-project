@@ -3,7 +3,13 @@ import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { icons, COLORS, FONT, SIZES } from "../constants";
 
-const Footer = ({ data }) => {
+const getThemeStyles = (isDark) => ({
+    container: {
+        backgroundColor: isDark ? COLORS.darkBackground : COLORS.lightWhite,
+    },
+});
+
+const Footer = ({ data, isDarkMode }) => {
     const [isFavorite, setIsFavorite] = useState(false);
 
     const checkIfFavorite = async () => {
@@ -40,8 +46,13 @@ const Footer = ({ data }) => {
         }
     };
 
+    const themeStyles = getThemeStyles(isDarkMode);
+
     return (
-        <View style={styles.container}>
+        <View
+            style={[styles.container, themeStyles.container]}
+            testID={styles.container}
+        >
             <TouchableOpacity
                 style={styles.likeBtn}
                 onPress={handleFavoriteToggle}
@@ -75,7 +86,6 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         padding: SIZES.small,
-        backgroundColor: "#FFF",
         justifyContent: "space-between",
         alignItems: "center",
         flexDirection: "row",
@@ -86,6 +96,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "#F37453",
         borderRadius: SIZES.medium,
+        backgroundColor: COLORS.white,
         justifyContent: "center",
         alignItems: "center",
     },

@@ -11,7 +11,13 @@ import {
 import { COLORS, FONT, SIZES, SHADOWS } from "../constants/theme";
 import useFetch from "../hook/useFetch";
 
-const DailyMeditation = ({ meditations }) => {
+const getThemeStyles = (isDark) => ({
+    headerTitle: {
+        color: isDark ? COLORS.lightWhite : COLORS.lightText,
+    },
+});
+
+const DailyMeditation = ({ meditations, isDarkMode }) => {
     const router = useRouter();
 
     const { isLoading, error, bestMeditations } = useFetch("search", {
@@ -25,10 +31,14 @@ const DailyMeditation = ({ meditations }) => {
 
     const data = meditations || bestMeditations;
 
+    const themeStyles = getThemeStyles(isDarkMode);
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.headerTitle}>Daily Meditation</Text>
+                <Text style={[styles.headerTitle, themeStyles.headerTitle]}>
+                    Daily Meditation
+                </Text>
             </View>
 
             <View style={styles.cardsContainer}>
@@ -89,7 +99,6 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontSize: SIZES.large,
         fontFamily: FONT.medium,
-        color: COLORS.primary,
     },
     cardsContainer: {
         marginTop: SIZES.medium,

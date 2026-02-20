@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "expo-router";
+import { useTheme } from "../../context/ThemeProvider";
 
 import ScreenHeaderBtn from "../../components/ScreenHeaderBtn";
 import DailyMeditation from "../../components/DailyMeditation";
@@ -18,6 +19,10 @@ import { COLORS, FONT, SIZES } from "../../constants";
 const Favourites = () => {
     const [favorites, setFavorites] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    const { theme, toggleTheme } = useTheme();
+
+    const isDarkMode = theme === "dark";
 
     const loadFavorites = async () => {
         try {
@@ -41,7 +46,12 @@ const Favourites = () => {
 
     return (
         <SafeAreaView
-            style={{ flex: 1, backgroundColor: COLORS.darkBackground }}
+            style={{
+                flex: 1,
+                backgroundColor: isDarkMode
+                    ? COLORS.darkBackground
+                    : COLORS.lightWhite,
+            }}
         >
             <ScreenHeaderBtn />
             <ScrollView showsVerticalScrollIndicator={false}>

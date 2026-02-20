@@ -4,7 +4,7 @@ import { COLORS, SIZES } from "../constants";
 
 const getThemeStyles = (isDark) => ({
     text: {
-        color: isDark ? COLORS.darkText : COLORS.lightWhite,
+        color: isDark ? COLORS.darkText : COLORS.lightText,
     },
 });
 
